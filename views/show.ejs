@@ -1,0 +1,19 @@
+<%include ./partials/header.ejs%>
+<div class="ui main text container segment">
+  <div class="ui huge header"><%=blog[0].title%></div>
+  <div class="ui top attached">
+    <div class="item">
+      <img class="ui image rounded centered"src="<%=blog[0].image%>" alt="picture">      
+      <div class="content">
+        <span><%=blog[0].created.toDateString()%></span>
+      </div>
+      <div class="description">
+        <p><%-blog[0].body%></p>
+      </div>
+    </div>       
+  </div>  
+</div>
+<%include ./partials/footer.ejs%>
+
+
+

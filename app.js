@@ -1,8 +1,8 @@
 const express = require("express"),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
-      ejs = require("ejs");
-
+      ejs = require("ejs"),
+      ObjectId = require("mongodb").ObjectID;
 
 const app = express();
 
@@ -61,6 +61,17 @@ app.post("/blogs", function(req, res) {
     }
   });
 });
+
+//SHOW ROUTE
+app.get("/blogs/:id", function(req, res) {
+  Blog.find({"_id": ObjectId(req.params.id)}, function(err, blog) {
+    if (err){
+      console.log("Error in getting the blog");
+      res.redirect("/blogs");
+    } 
+    else res.render("show", {blog: blog});
+  });
+}); 
 
 
 app.get("/", function(req, res) {
