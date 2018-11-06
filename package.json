@@ -1,0 +1,23 @@
+{
+  "name": "blog-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deepali2/RESTful-BlogApp.git"
+  },
+  "author": "Deepali Garg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deepali2/RESTful-BlogApp/issues"
+  },
+  "homepage": "https://github.com/Deepali2/RESTful-BlogApp#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
