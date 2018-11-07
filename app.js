@@ -65,7 +65,7 @@ app.post("/blogs", function(req, res) {
 
 //SHOW ROUTE
 app.get("/blogs/:id", function(req, res) {
-  Blog.find({"_id": ObjectId(req.params.id.substring(1))}, function(err, blog) {
+  Blog.find({"_id": ObjectId(req.params.id)}, function(err, blog) {
     if (err){
       console.log("Error in getting the blog");
       res.redirect("/blogs");
@@ -76,23 +76,36 @@ app.get("/blogs/:id", function(req, res) {
 
 //EDIT ROUTE
 app.get("/blogs/:id/edit", function(req, res) {
-  Blog.find({"_id": ObjectId(req.params.id.substring(1))}, function(err, blog) {
+   Blog.find({"_id": ObjectId(req.params.id)}, function(err, blog) {
     if (err){
       console.log("Error in getting the blog");
       res.redirect("/blogs");
     } 
     else res.render("edit", {blog: blog});
   });  
-});
+});  
 
 //UPDATE ROUTE
 app.put("/blogs/:id", function(req, res) {  
-  Blog.findOneAndUpdate(ObjectId(req.params.id.substring(1)), req.body.blog, function(err, updatedBlog) {
+  Blog.findOneAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
     if (err) {
       console.log("There is an error in updating the blog: ");
       res.redirect("/blogs");
     }else {
-      res.redirect(`/blogs/${req.params.id}`);
+      res.redirect("/blogs/" + req.params.id.substring(1));
+    }
+  });
+});
+
+
+//DELETE ROUTE
+app.delete("/blogs/:id", function(req, res) {
+  Blog.findOneAndDelete(req.params.id, function(err, updatedBlog) {
+    if (err) {
+      console.log("There is an error in updating the blog: ");
+      res.redirect("/blogs");
+    }else {
+      res.redirect("/blogs");
     }
   });
 });

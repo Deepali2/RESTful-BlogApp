@@ -1,4 +1,5 @@
 <%include ./partials/header.ejs%>
+
 <div class="ui main text container segment">
     <div class="ui huge header">EDIT <%=blog[0].title%></div>
     <form class ="ui form" action="/blogs/:<%=blog[0]._id%>?_method=PUT" method="POST">

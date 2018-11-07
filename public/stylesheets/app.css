@@ -5,3 +5,7 @@ i.icon {
 .text.container {
   margin-top: 4.0em;
 }
+
+#delete {
+  display: inline;
+}
