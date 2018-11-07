@@ -3,12 +3,14 @@ const express = require("express"),
       methodOverride = require ("method-override"),
       mongoose = require("mongoose"),
       ejs = require("ejs"),
+      expressSanitizer = require("express-sanitizer"),
       ObjectId = require("mongodb").ObjectID;
 
 const app = express();
 
 //APP CONFIG
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
 app.use(methodOverride('_method'))
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -52,6 +54,7 @@ app.get("/blogs/new", function(req, res) {
 
 //CREATE ROUTE
 app.post("/blogs", function(req, res) { 
+  req.body.blog.body = req.sanitize(req.body.blog.body);
   Blog.create(req.body.blog, function(err, blog) {
     if (err) {
       console.log("There is an error in creating a new blog: ", err);
@@ -86,7 +89,8 @@ app.get("/blogs/:id/edit", function(req, res) {
 });  
 
 //UPDATE ROUTE
-app.put("/blogs/:id", function(req, res) {  
+app.put("/blogs/:id", function(req, res) { 
+  req.body.blog.body = req.sanitize(req.body.blog.body); 
   Blog.findOneAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
     if (err) {
       console.log("There is an error in updating the blog: ");
