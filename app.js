@@ -1,5 +1,6 @@
 const express = require("express"),
       bodyParser = require("body-parser"),
+      methodOverride = require ("method-override"),
       mongoose = require("mongoose"),
       ejs = require("ejs"),
       ObjectId = require("mongodb").ObjectID;
@@ -8,6 +9,7 @@ const app = express();
 
 //APP CONFIG
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'))
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 mongoose.connect("mongodb://localhost:27017/restful_blog_app", {useNewUrlParser: true});
@@ -55,8 +57,7 @@ app.post("/blogs", function(req, res) {
       console.log("There is an error in creating a new blog: ", err);
       res.render("new");
     }
-    else {
-      console.log("New blog created: ", blog);
+    else {      
       res.redirect("/blogs");
     }
   });
@@ -64,7 +65,7 @@ app.post("/blogs", function(req, res) {
 
 //SHOW ROUTE
 app.get("/blogs/:id", function(req, res) {
-  Blog.find({"_id": ObjectId(req.params.id)}, function(err, blog) {
+  Blog.find({"_id": ObjectId(req.params.id.substring(1))}, function(err, blog) {
     if (err){
       console.log("Error in getting the blog");
       res.redirect("/blogs");
@@ -73,6 +74,28 @@ app.get("/blogs/:id", function(req, res) {
   });
 }); 
 
+//EDIT ROUTE
+app.get("/blogs/:id/edit", function(req, res) {
+  Blog.find({"_id": ObjectId(req.params.id.substring(1))}, function(err, blog) {
+    if (err){
+      console.log("Error in getting the blog");
+      res.redirect("/blogs");
+    } 
+    else res.render("edit", {blog: blog});
+  });  
+});
+
+//UPDATE ROUTE
+app.put("/blogs/:id", function(req, res) {  
+  Blog.findOneAndUpdate(ObjectId(req.params.id.substring(1)), req.body.blog, function(err, updatedBlog) {
+    if (err) {
+      console.log("There is an error in updating the blog: ");
+      res.redirect("/blogs");
+    }else {
+      res.redirect(`/blogs/${req.params.id}`);
+    }
+  });
+});
 
 app.get("/", function(req, res) {
   res.redirect("/blogs");
